@@ -1,0 +1,8 @@
+- name: Shutdown all vm's
+  hosts: all
+  tasks:
+    - name: Unconditionally shut down the machine with all defaults
+      community.general.shutdown:
+      become: yes
+#      shell:
+#        "sudo shutdown"

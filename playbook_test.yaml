@@ -1,0 +1,19 @@
+- name: My first play
+  hosts: vm
+  tasks:
+#   - name: Remove apt lock file
+#     file:
+#      state: absent
+#      path: "/var/lib/dpkg/lock-frontend"
+#     become: true
+#     tags: apt
+   - name: Update all packages to their latest version
+     ansible.builtin.apt:
+       name: "*"
+       state: latest
+     become: true
+   - name: Ping my hosts
+     ansible.builtin.ping:
+   - name: Print message
+     ansible.builtin.debug:
+       msg: Hello world!!!
