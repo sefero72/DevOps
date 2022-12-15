@@ -1,0 +1,22 @@
+- hosts: server1
+  become: true
+  vars:
+    container_count: 2
+    default_container_name: nginx
+    default_container_image: nginx
+    default_container_port: 80
+
+  tasks: #pull container
+    - name: Pull default Docker image
+      community.docker.docker_image:
+        name: "{{ default_container_image }}"
+        source: pull
+
+    - name: Create default containers
+      community.docker.docker_container:
+        name: "{{ default_container_name }}{{ item }}" #name = "name"&"iteration number"
+        image: "{{ default_container_image }}"
+        state: started
+        published_ports: "{{(default_container_port|int + item|int - 1)}}:{{default_container_port}}" 
+                                                    #port = (def_port + 1 - 1):def_port
+      with_sequence: count={{ container_count }}
